@@ -1,16 +1,3 @@
-#! /bin/bash
-
-#$ -cwd
-#$ -q broad
-#$ -P regevlab
-
-#$ -l h_vmem=10g,h_rt=24:00:00
-
-source /broad/software/scripts/useuse 
-reuse .samtools-1.3.1
-reuse .python-2.7.9-sqlite3-rtrees
-reuse BEDTools
-reuse R-3.3
 
 CTSSFile=$1
 saveName=$2
