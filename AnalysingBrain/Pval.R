@@ -26,7 +26,7 @@ return(sm/tot)
 }
 
 
-getPval<-function(dat,samp1_name,samp2_name,exactNum=-1,getGeneMeans=F,scaled=-1,normed=F,getMeans=F,scor_test="mean")
+getPval<-function(dat,samp1_name,samp2_name,exactNum=-1,getGeneMeans=F,scaled=-1,normed=T,getMeans=T,scor_test="mean")
 {
 if(exactNum>0)
 {
@@ -109,6 +109,7 @@ res=wilcox.test(x,y,paired=T,alternative="less")
 pv=res$p.value
 print(res$estimate)
 if(getMeans){pv=c(pv,mn,SD,SE)}
+names(pv)=c("p-value","mean","SD","SE")
 return(pv)
 
 
