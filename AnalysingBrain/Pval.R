@@ -1,3 +1,5 @@
+
+
 library(reshape)
 
 
@@ -125,28 +127,3 @@ return(pv)
 
 }
 
-if(!interactive())
-{
-dat=read.table("combined.txt",sep="\t",header=T)
-lst=colnames(dat)[7:14]
-for(i in lst)
-{
-for(j in lst)
-{
-numRep=10000
-input=commandArgs(TRUE)
-samp1_name=i#nput[1]#strsplit(input,split=" ")[[1]][1]
-samp2_name=j#input[2]#strsplit(input,split=" ")[[1]][2]
-print("got args!")
-print(input)
-print(samp1_name)
-print(samp2_name)
-if(i!=j)
-{
-pv=testPval(dat,samp1_name,samp2_name,numRep=numRep)
-save_string=paste(samp1_name,samp2_name,toString(pv),sep=" ")
-print(save_string)
-write(save_string,"pvals.txt",append=T)
-}
-}}
-}
