@@ -121,8 +121,13 @@ $(document).ready(function () {
 </div>
 
 
+<div id="comparision-of-fiveprime-data-between-brain-regions" class="section level1">
+<h1>Comparision of FivePrime data between brain regions</h1>
+<div id="five-prime-bias" class="section level2">
+<h2>Five Prime bias</h2>
 <p>Here we are interested in analysing the brain data from our paper. The first step is to upload the data:</p>
-<pre class="r"><code>dat&lt;-read.table(&quot;/home/unix/ssimmons/FivePrime/GithubCode/FivePrime/AnalysingBrain/data/Brain_Data.bed&quot;,header=T)
+<pre class="r"><code>dat&lt;-read.table(&quot;data/Brain_Data.bed&quot;,header=T)
+#dat&lt;-read.table(&quot;/home/unix/ssimmons/FivePrime/GithubCode/FivePrime/AnalysingBrain/data/Brain_Data.bed&quot;,header=T)
 head(dat)</code></pre>
 <pre><code>##   chr  start    end       name sign         Gene HBVSMC HBMEC Neuron
 ## 1   1 713961 714087 CombPeak_1    - LOC100288069     32    46    182
@@ -146,7 +151,7 @@ head(dat)</code></pre>
 ## 5                    1
 ## 6                    1</code></pre>
 <p>We can then import the code. Note that this code was used for Figure 6b and 6c to get the corresponding p-value.</p>
-<pre class="r"><code>source(&quot;/ahg/regevdata/projects/FiveprimeRNA/seanken/GithubCode/FivePrime/AnalysingBrain/Pval.R&quot;)</code></pre>
+<pre class="r"><code>source(&quot;Pval.R&quot;)</code></pre>
 <p>We are then able to calculate the normalized change in 5’ to 3’ bias, the p-value, and standard deviation and errors. For example, if we want to compare the invitro neurons (H66) to the fetal frontal cortex data, we get:</p>
 <pre class="r"><code>pv=getPval(dat,&quot;H66&quot;,&quot;Fetal_Frontal&quot;)</code></pre>
 <pre><code>## Loading required package: ggplot2</code></pre>
@@ -205,6 +210,8 @@ head(dat)</code></pre>
 <pre><code>##       p-value          mean            SD            SE 
 ##  1.227067e-26 -1.442049e-01  5.016091e-01  1.302112e-02</code></pre>
 <p>This is testing the hypopthesis that H66 has less active TSS than the fetal frontal cortex.</p>
+</div>
+</div>
 
 
 

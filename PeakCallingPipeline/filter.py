@@ -11,7 +11,6 @@ def filter_bed_new(bt, filter_function, verbose=True, filter_name=None, max_erro
     initial_count = bt.count()
     intervals = []
     line_count = 0
-    info("Starting " + filter_name + " filtering ")
     for interval in bt:
         try:
             if filter_function(interval):
@@ -39,7 +38,6 @@ def filter_bed_new(bt, filter_function, verbose=True, filter_name=None, max_erro
                       str(initial_count-rval.count()) + ", " + str(rval.count()) + " left."
         if filter_name is not None:
             info_string = "[" + filter_name + "] " + info_string
-        info(info_string)
     return rval
 
 

@@ -36,6 +36,10 @@ EOF
 
 var=$1;
 out=$2;
+
+echo $var
+echo $out
+
 foo=$var
 file=${foo##*/}
 base=${file%%.*}
@@ -55,7 +59,7 @@ cat  ${TMPFILE} \
 | groupBy -i stdin -g 1,2 -c 3 -o count \
 | awk -v x="$base" 'BEGIN{OFS="\t"}{print $1,"-",$2-1,$3}' >> $out
 
-rm $TMPFILE
+#rm $TMPFILE
    
 
 

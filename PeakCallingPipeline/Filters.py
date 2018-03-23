@@ -13,8 +13,8 @@
 ############################################
 
 #from util import info_green, info, mkdir_p, run_external, forscreen, \
-    warn, error, sort_and_test, files_with_extension_in, make_bed_file, \
-    normalise_peak_scores, has_file_extension
+ #   warn, error, sort_and_test, files_with_extension_in, make_bed_file, \
+  #  normalise_peak_scores, has_file_extension
 from filter import filter_bed_new
 import os
 import traceback
@@ -33,7 +33,6 @@ def run_paraclu(paraclu_raw,paraclu_fin,min_peak_width,max_peak_width,min_densit
     """
     if version == "paraclu":
 
-        info("ParaClu filtering..")
         peaks_bt = BedTool(paraclu_raw)
         # too narrow or wide
         peaks_bt = filter_bed_new(peaks_bt,
@@ -45,8 +44,6 @@ def run_paraclu(paraclu_raw,paraclu_fin,min_peak_width,max_peak_width,min_densit
         # make sure s=True to only merge peaks on the same strand.
         peaks_bt = peaks_bt.merge(c=[4, 5, 6, 7, 8], o=["max", "max", "distinct", "min", "max"], s=True)  # d=min_resolution) #o=max -- keep the score of the
                                                        #  scoring peak, and 'collapse' keep a list of the names o
-        info("[Merge] Initial: " + str(initial_count) + ", removed " + \
-                      str(initial_count-peaks_bt.count()) + ", " + str(peaks_bt.count()) + " left.")
 
         # remove peaks that have less than the minimum density rise
         peaks_bt = filter_bed_new(peaks_bt, lambda x: float(x[7]) / float(x[6]) > min_density_rise,
@@ -75,11 +72,11 @@ def run_paraclu(paraclu_raw,paraclu_fin,min_peak_width,max_peak_width,min_densit
 if __name__=="__main__":
 	print("Read arguments!")
 	output=sys.argv[1]
-	max_peak_width=int(sys.argv[2])
-	min_peak_width=int(sys.argv[3])
-	min_density_rise=int(sys.argv[4])
-	min_pos_with_data=int(sys.argv[5])
-	min_sum=int(sys.argv[6])
+	max_peak_width=float(sys.argv[2])
+	min_peak_width=float(sys.argv[3])
+	min_density_rise=float(sys.argv[4])
+	min_pos_with_data=float(sys.argv[5])
+	min_sum=float(sys.argv[6])
 	paraclu_raw=output+".raw.bed"
 	paraclu_fin=output+".bed"
 	print("Filter data!")
