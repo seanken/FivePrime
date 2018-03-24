@@ -1,4 +1,4 @@
-#~/bin/bash
+#!/bin/bash
 
 
 ##This command takes in a bam file (with some extra information) to run RSEM on it.

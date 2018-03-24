@@ -35,14 +35,14 @@ def run_paraclu(paraclu_raw,paraclu_fin,min_peak_width,max_peak_width,min_densit
 
         peaks_bt = BedTool(paraclu_raw)
         # too narrow or wide
-        peaks_bt = filter_bed_new(peaks_bt,
-                                  lambda x: (len(x) > min_peak_width and len(x) < max_peak_width),
-                                  filter_name="Width")
-        peaks_bt = peaks_bt.sort()
-        initial_count = peaks_bt.count()
+        #peaks_bt = filter_bed_new(peaks_bt,
+        #                          lambda x: (len(x) > min_peak_width and len(x) < max_peak_width),
+        #                          filter_name="Width")
+        #peaks_bt = peaks_bt.sort()
+        #initial_count = peaks_bt.count()
 
         # make sure s=True to only merge peaks on the same strand.
-        peaks_bt = peaks_bt.merge(c=[4, 5, 6, 7, 8], o=["max", "max", "distinct", "min", "max"], s=True)  # d=min_resolution) #o=max -- keep the score of the
+        #peaks_bt = peaks_bt.merge(c=[4, 5, 6, 7, 8], o=["max", "max", "distinct", "min", "max"], s=True)  # d=min_resolution) #o=max -- keep the score of the
                                                        #  scoring peak, and 'collapse' keep a list of the names o
 
         # remove peaks that have less than the minimum density rise

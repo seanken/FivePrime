@@ -5,11 +5,11 @@ INPUT=$1
 OUTPUT_DIR=$2
 NUM=$3
 MinVal=$4
-MIN_WIDTH=$5
-MAX_WIDTH=$6
-min_density_rise=$7
-min_pos_with_data=$8
-min_sum=$9
+#MIN_WIDTH=$5
+#MAX_WIDTH=$6
+min_density_rise=$5
+min_pos_with_data=$6
+min_sum=$7
 
 
 
@@ -28,7 +28,7 @@ echo "Make CTSS"
 
 echo "Run Paraclu"
 PARACLU_OUT=${OUTPUT_DIR}/paraclu
-./RunParaclu.sh $CTSS $MinVal $PARACLU_OUT $MIN_WIDTH $MAX_WIDTH $min_density_rise $min_pos_with_data $min_sum
+./RunParaclu.sh $CTSS $MinVal $PARACLU_OUT $min_density_rise $min_pos_with_data $min_sum
 
 
 
