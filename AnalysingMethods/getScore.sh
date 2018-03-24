@@ -8,7 +8,7 @@
 
 PEAKS=$1 #Bed file of peaks
 EVAL=$2 #directory to save analysis in
-COVEREDGENES=$RSEM ##location of genes.results files from RSEM
+RSEM=$3 ##location of genes.results files from RSEM
 GENES=$4 ##bed file of genes
 DNASE=$5 ## bed file of dnase
 TSS=$6 ##Bed file of annotated TSS
@@ -31,8 +31,8 @@ wc -l ${EVAL}/ParaClu_false_pos.bed | echo
 
 
 echo "get false negatives"
-Rscript getCovered.R $GENE $RSEM
-bedtools intersect -u -a $TSS -b ${DIR}/coverage/covered.bed > ${EVAL}/temp.bed
+Rscript getCovered.R $GENE $RSEM $EVAL
+bedtools intersect -u -a $TSS -b ${EVAL}/covered.bed > ${EVAL}/temp.bed
 bedtools intersect -u -a ${EVAL}/temp.bed -b $DNASE > ${EVAL}/must_call_set.bed
 bedtools window -v -w 100 -a ${EVAL}/must_call_set.bed -b $PEAKS > ${EVAL}/ParaClu_false_neg.bed
 echo "Number FN:"

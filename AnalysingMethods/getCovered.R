@@ -1,14 +1,17 @@
 
 args = commandArgs(trailingOnly=TRUE)
 geneFile=args[1]
-direct=args[2]
+RSEM_Output=args[2]
+direct=args[3]
+
 
 print(geneFile)
+print(RSEM_Output)
 print(direct)
 
 print("Get covered genes from RSEM output")
-RSEM_Output=paste(direct,"coverage","all_genes.bed.genes.results",sep="/")
-print(RSEM_Output)
+#RSEM_Output=paste(direct,"coverage","all_genes.bed.genes.results",sep="/")
+#print(RSEM_Output)
 rsem=read.table(RSEM_Output,header=T)
 rownames(rsem)=rsem[,"gene_id"]
 rsem=rsem[rsem$TPM > 1,]
@@ -22,6 +25,6 @@ rownames(gene_location)=gene_location[,4]
 gene_location=gene_location[covered_genes,]
 
 print("Save covered genes")
-savefile=paste(direct,"coverage","covered.bed",sep="/")
+savefile=paste(direct,"covered.bed",sep="/")
 print(savefile)
 write.table(gene_location,savefile,sep="\t",col.names=F,row.names=F,quote=F)
