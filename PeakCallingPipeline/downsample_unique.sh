@@ -97,7 +97,8 @@ fi
 
 echo "Writing out these reads to --> " $output_bam [Picard tools]
 #java -jar -Xmx8g /seq/software/picard-public/current/picard.jar FilterSamReads I=$input_bam O=$output_bam \
-java -jar -Xmx8g /seq/software/picard-public/2.16.0/picard.jar FilterSamReads I=$input_bam O=$output_bam \
+#java -jar -Xmx8g /seq/software/picard-public/2.16.0/picard.jar FilterSamReads I=$input_bam O=$output_bam \
+java -jar -Xmx8g PICARD/picard.jar FilterSamReads I=$input_bam O=$output_bam \
     READ_LIST_FILE=$rlp$final_suf  FILTER=includeReadList WRITE_READS_FILES="false"
 
 
