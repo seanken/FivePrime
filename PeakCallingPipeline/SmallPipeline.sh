@@ -21,10 +21,10 @@ mkdir $OUTPUT_DIR
 echo $OUTPUT_DIR
 
 echo "Dowsample to $NUM"
-./downsample_unique.sh -o ${OUTPUT_DIR}/downsampled.bam -i $INPUT -n $NUM -r ${OUTPUT_DIR}/rlp
+#./downsample_unique.sh -o ${OUTPUT_DIR}/downsampled.bam -i $INPUT -n $NUM -r ${OUTPUT_DIR}/rlp
 
 echo "Make CTSS"
-./make_ctss3.sh $DS $CTSS
+#./make_ctss3.sh $DS $CTSS
 
 echo "Run Paraclu"
 PARACLU_OUT=${OUTPUT_DIR}/paraclu

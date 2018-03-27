@@ -25,8 +25,7 @@ GenomeName="../data/hg19.fa"
 cut=20
 OutputFile=${saveName}.temp.bed
 perl ../CapFilter/CapFilter.pl peak --bed --cutoff $cut --out $OutputFile --soft $Soft --barcodelen $Barlen ${saveName}.bed $BamName $GenomeName
-#mv ${saveName}.temp.bed $saveName.bed
-cp ${saveName}.temp.bed ${saveName}.mess.bed
+#cp ${saveName}.temp.bed ${saveName}.mess.bed
 python FixCap.py ${saveName}.temp.bed $saveName.bed $saveName.bed
 
 cp ${saveName}.bed ${saveName}.TC.bed
@@ -57,7 +56,6 @@ intersect_eRNA=$(bedtools intersect -u -a ${saveName}.enhance.bed -b sources/eRN
 echo Total Reads,Overlap dnase,Overlap H3k27ac, Overlap H3k27ac broad, Overlap both narrow,Overlap eRNA > ${saveName}.results.csv
 echo $Tot_enhancers,$intersect_Dnase,$intersect_H3k27ac,$intersect_broad_H3k27ac,$intersect_both,$intersect_eRNA >> ${saveName}.results.csv
 
-echo ${saveName},$Tot_enhancers,$intersect_Dnase,$intersect_H3k27ac,$intersect_broad_H3k27ac,$intersect_both,$intersect_eRNA >> results_cap.csv
 
 rm debug.txt
 

@@ -42,7 +42,7 @@ if ($command eq 'seq') {
 
 } elsif ($command eq 'peak') {
 
-	open(DEBUG, ">debug.txt") || die("Error opening file '$output_file' for writing: $!\n");
+	#open(DEBUG, ">debug.txt") || die("Error opening file '$output_file' for writing: $!\n");
 	$sorted = 0;
 	$bed = 0;
 	$soft=12;
@@ -208,14 +208,14 @@ if ($command eq 'seq') {
 		if ($strand eq '-') {$read_base =~ tr/acgtACGT/tgcaTGCA/;}
 		my $fordebug = substr($genome{$hit{'rname'}}, $start-4, $end-$start+8);
 		
-		print DEBUG $hit{'seq'};
-		print DEBUG "\n";
-		print DEBUG $fordebug;
-		print DEBUG "\n";
-		print DEBUG $hit{'cigar'};
-		print DEBUG "\n";
-		print DEBUG $read_base;
-		print DEBUG "\n";
+		#print DEBUG $hit{'seq'};
+		#print DEBUG "\n";
+		#print DEBUG $fordebug;
+		#print DEBUG "\n";
+		#print DEBUG $hit{'cigar'};
+		#print DEBUG "\n";
+		#print DEBUG $read_base;
+		#print DEBUG "\n";
 		
 		foreach my $overlap (@overlaps) {
 			my ($edge, $peak, $index);
@@ -251,12 +251,12 @@ if ($command eq 'seq') {
 					$peak->{'total_unencoded'}++;
 				}
 			}
-			print DEBUG $genome_base;
-			print DEBUG "hi\n";
+			#print DEBUG $genome_base;
+			#print DEBUG "hi\n";
 		}
 	}
 	close(BAM);
-	close(DEBUG);
+	#close(DEBUG);
 	my $out_fh = *STDOUT;
 
 	if ($output_file ne '') {
