@@ -31,7 +31,7 @@ colnames(tab)=c("A","T","G","C")
 
 print("Make table!")
 
-lst=sample(lst,1000)
+#lst=sample(lst,1000)
 
 for(l in lst){for(i in 1:101){cur=substr(l,i,i);if(cur %in% colnames(tab)){tab[i,cur]=tab[i,cur]+1} }}
 tab["method"]=method

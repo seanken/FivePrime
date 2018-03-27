@@ -1,9 +1,8 @@
 
-CTSSFile=$1
-saveName=$2
-TCFile=$3
-##Amount CTSS off by due to soft mapping
-offBy=$4
+CTSSFile=$1 ##The location of the CTSS file, see that standard peak calling pipeline for how to calculate
+saveName=$2 ##Self explanatory, will be used as a prefix
+TCFile=$3 ##TC peaks, see 	
+offBy=$4 ##The soft clipping number minus the barcod length (see description for Capfilter for more details)
 
 
 echo $CTSSFile
@@ -16,11 +15,16 @@ TCGene=${saveName}.TC.genes.bed
 GENES=/home/unix/ahaber/ref/bed/genes_UCSC_hg19.allIds.bed
 GENES="../data/Gene.bed"
 
+echo $GENES
 
-bedtools window -w 100 -a $TCfile -b $GENES -u > $TCGene
+bedtools window -w 100 -a $TCFile -b $GENES -u > $TCGene
+
+echo "Remove low coverage"
 
 awk '($5) >= 10' $TCGene > ${saveName}.temp.bed
 mv ${saveName}.temp.bed $TCGene
+
+echo "Make CTSS bed"
 
 CTSSBed=${saveName}.ctss.bed
 Rscript makeCTSSBed.R $CTSSFile $CTSSBed
