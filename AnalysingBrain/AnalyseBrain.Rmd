@@ -1,17 +1,19 @@
-# Comparision of FivePrime data between brain regions
+#Analysising Brain Data
 
-## Five Prime bias 
+
 Here we are interested in analysing the brain data from our paper. The first step is to upload the data:
 
 ```{r}
-dat<-read.table("data/Brain_Data.bed",header=T)
+dat<-read.table("/home/unix/ssimmons/FivePrime/GithubCode/FivePrime/AnalysingBrain/data/Brain_Data.bed",header=T)
 head(dat)
 ```
+
+#Comparing 5' bias between samples (Figure 6b)
 
 We can then import the code. Note that this code was used for Figure 6b and 6c to get the corresponding p-value.
 
 ```{r}
-source("Pval.R")
+source("/ahg/regevdata/projects/FiveprimeRNA/seanken/GithubCode/FivePrime/AnalysingBrain/Pval.R")
 ```
 
 We are then able to calculate the normalized change in 5' to 3' bias, the p-value, and standard deviation and errors. For example, if we want to compare the invitro neurons (H66) to the fetal frontal cortex data, we get:
@@ -23,6 +25,9 @@ print(pv)
 
 This is testing if H66 is more 5' than fetal frontal cortex. Note the results are close, but not quite identical to those in the paper--this is due to the random downsampling step when calling peaks.
 
+
+#Comparing number expressed peaks between samples (Figure 6c)
+
 If we aren't interested in comparing 5' bias between samples but instead of comparing the number of TSS used per Gene, we would run:
 
 ```{r}
@@ -31,6 +36,32 @@ print(pv)
 ```
 
 This is testing the hypopthesis that H66 has less active TSS than the fetal frontal cortex.
+i
 
-##Differential TSS usage comparision
+#Performing DE on five prime data (Figure 5a)
 
+We are also interested, for a given pair of regions, finding genes that are different between them. As such, for each gene with >1 peaks and >100 reads mapped to it, we want to test if there is a difference in proporition between the two samples for usage. Note there is only one biological replicate per tissue, so the reults should be taken with a grain of salt (similiar warning applies to the above results).
+
+To do this, we first load the fisher exact code used:
+
+```{r}
+source("fishers_exact.R")
+```
+
+In order to run this, we need to rename the columns so that all columns that contain count data begin with "PR_". We also add an alternative name column that has extra information about each peak:
+
+```{r}
+dat$Name = paste(dat$Gene, dat$Position_in_Gene, dat$Number_Peaks_in_Gene, sep="_")
+dat <- dat[, c(ncol(dat), (1:ncol(dat))[-ncol(dat)])]
+colnames(dat)[8:15] = paste0("PR_",colnames(dat)[8:15])
+head(dat)
+```
+
+With the table properly formatted, we can now run the test for all pairs of samples and all genes:
+
+```{r}
+res=calculate_all(dat)
+head(res)
+```
+
+This can then be used to find interesting genes!

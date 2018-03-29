@@ -121,13 +121,10 @@ $(document).ready(function () {
 </div>
 
 
-<div id="comparision-of-fiveprime-data-between-brain-regions" class="section level1">
-<h1>Comparision of FivePrime data between brain regions</h1>
-<div id="five-prime-bias" class="section level2">
-<h2>Five Prime bias</h2>
+<div id="analysising-brain-data" class="section level1">
+<h1>Analysising Brain Data</h1>
 <p>Here we are interested in analysing the brain data from our paper. The first step is to upload the data:</p>
-<pre class="r"><code>dat&lt;-read.table(&quot;data/Brain_Data.bed&quot;,header=T)
-#dat&lt;-read.table(&quot;/home/unix/ssimmons/FivePrime/GithubCode/FivePrime/AnalysingBrain/data/Brain_Data.bed&quot;,header=T)
+<pre class="r"><code>dat&lt;-read.table(&quot;/home/unix/ssimmons/FivePrime/GithubCode/FivePrime/AnalysingBrain/data/Brain_Data.bed&quot;,header=T)
 head(dat)</code></pre>
 <pre><code>##   chr  start    end       name sign         Gene HBVSMC HBMEC Neuron
 ## 1   1 713961 714087 CombPeak_1    - LOC100288069     32    46    182
@@ -150,8 +147,11 @@ head(dat)</code></pre>
 ## 4                    1
 ## 5                    1
 ## 6                    1</code></pre>
+</div>
+<div id="comparing-5-bias-between-samples-figure-6b" class="section level1">
+<h1>Comparing 5’ bias between samples (Figure 6b)</h1>
 <p>We can then import the code. Note that this code was used for Figure 6b and 6c to get the corresponding p-value.</p>
-<pre class="r"><code>source(&quot;Pval.R&quot;)</code></pre>
+<pre class="r"><code>source(&quot;/ahg/regevdata/projects/FiveprimeRNA/seanken/GithubCode/FivePrime/AnalysingBrain/Pval.R&quot;)</code></pre>
 <p>We are then able to calculate the normalized change in 5’ to 3’ bias, the p-value, and standard deviation and errors. For example, if we want to compare the invitro neurons (H66) to the fetal frontal cortex data, we get:</p>
 <pre class="r"><code>pv=getPval(dat,&quot;H66&quot;,&quot;Fetal_Frontal&quot;)</code></pre>
 <pre><code>## Loading required package: ggplot2</code></pre>
@@ -191,6 +191,9 @@ head(dat)</code></pre>
 <pre><code>##      p-value         mean           SD           SE 
 ##  0.164797677 -0.005418363  0.112571777  0.002968589</code></pre>
 <p>This is testing if H66 is more 5’ than fetal frontal cortex. Note the results are close, but not quite identical to those in the paper–this is due to the random downsampling step when calling peaks.</p>
+</div>
+<div id="comparing-number-expressed-peaks-between-samples-figure-6c" class="section level1">
+<h1>Comparing number expressed peaks between samples (Figure 6c)</h1>
 <p>If we aren’t interested in comparing 5’ bias between samples but instead of comparing the number of TSS used per Gene, we would run:</p>
 <pre class="r"><code>pv=getPval(dat,&quot;H66&quot;,&quot;Fetal_Frontal&quot;,normed=F,scor_test=&quot;num&quot;)</code></pre>
 <pre><code>##         1   2   3 4 5
@@ -209,8 +212,115 @@ head(dat)</code></pre>
 <pre class="r"><code>print(pv)</code></pre>
 <pre><code>##       p-value          mean            SD            SE 
 ##  1.227067e-26 -1.442049e-01  5.016091e-01  1.302112e-02</code></pre>
-<p>This is testing the hypopthesis that H66 has less active TSS than the fetal frontal cortex.</p>
+<p>This is testing the hypopthesis that H66 has less active TSS than the fetal frontal cortex. i</p>
 </div>
+<div id="performing-de-on-five-prime-data-figure-5a" class="section level1">
+<h1>Performing DE on five prime data (Figure 5a)</h1>
+<p>We are also interested, for a given pair of regions, finding genes that are different between them. As such, for each gene with &gt;1 peaks and &gt;100 reads mapped to it, we want to test if there is a difference in proporition between the two samples for usage. Note there is only one biological replicate per tissue, so the reults should be taken with a grain of salt (similiar warning applies to the above results).</p>
+<p>To do this, we first load the fisher exact code used:</p>
+<pre class="r"><code>source(&quot;fishers_exact.R&quot;)</code></pre>
+<pre><code>## Loading required package: lattice</code></pre>
+<pre><code>## Loading required package: plyr</code></pre>
+<pre><code>## 
+## Attaching package: 'plyr'</code></pre>
+<pre><code>## The following objects are masked from 'package:reshape':
+## 
+##     rename, round_any</code></pre>
+<p>In order to run this, we need to rename the columns so that all columns that contain count data begin with “PR_”. We also add an alternative name column that has extra information about each peak:</p>
+<pre class="r"><code>dat$Name = paste(dat$Gene, dat$Position_in_Gene, dat$Number_Peaks_in_Gene, sep=&quot;_&quot;)
+dat &lt;- dat[, c(ncol(dat), (1:ncol(dat))[-ncol(dat)])]
+colnames(dat)[8:15] = paste0(&quot;PR_&quot;,colnames(dat)[8:15])
+head(dat)</code></pre>
+<pre><code>##               Name chr  start    end       name sign         Gene
+## 1 LOC100288069_1_1   1 713961 714087 CombPeak_1    - LOC100288069
+## 2    LINC00115_1_1   1 762712 762925 CombPeak_2    -    LINC00115
+## 3    LOC643837_1_1   1 762904 763133 CombPeak_3    +    LOC643837
+## 4        NOC2L_1_1   1 894597 894703 CombPeak_5    -        NOC2L
+## 5         HES4_1_1   1 935327 935585 CombPeak_6    -         HES4
+## 6        ISG15_1_1   1 948822 948932 CombPeak_8    +        ISG15
+##   PR_HBVSMC PR_HBMEC PR_Neuron PR_Astrocyte PR_Fetal_Frontal
+## 1        32       46       182           84              105
+## 2        39       46       263           64              172
+## 3       201      242       472          199              687
+## 4       538      855       979          662              823
+## 5        27      180       804          235              455
+## 6       644      137       116          358               74
+##   PR_Adult_Frontal PR_Organoid PR_H66 Position_in_Gene
+## 1               97         123    139                1
+## 2              113         229    148                1
+## 3              236         279    808                1
+## 4              365         325    716                1
+## 5              135         155    333                1
+## 6              170         102      1                1
+##   Number_Peaks_in_Gene
+## 1                    1
+## 2                    1
+## 3                    1
+## 4                    1
+## 5                    1
+## 6                    1</code></pre>
+<p>With the table properly formatted, we can now run the test for all pairs of samples and all genes:</p>
+<pre class="r"><code>res=calculate_all(dat)</code></pre>
+<pre><code>## =======================================================================================
+## [1] &quot;Searching for differential TSS use (fishers exact test)&quot;
+## =======================================================================================
+## 
+## [1] &quot;Filtering diffTSS matrix&quot;
+## [1] &quot;Filtering TSS matrix&quot;
+## [1] &quot;Dropped 28 peaks in genes where the peak is ambiguous, 14591 remain [12795 genes]&quot;
+## [1] &quot;Dropped 11317 peak regions for which there is only one per gene, 3274 remain [1478 genes]&quot;
+## [1] &quot;Filtering complete!&quot;
+## 
+## 
+## [1] &quot;Filter on peaks (Min reads= 100)&quot;
+## [1] &quot;Genes: 1478, p.threshold: 1e-04&quot;
+## [1] &quot;Testing RIT1 [6.8 percent complete]&quot;
+## [1] &quot;Testing ABLIM1 [13.5 percent complete]&quot;
+## [1] &quot;Testing NTM [20.3 percent complete]&quot;
+## [1] &quot;Testing UCHL3 [27.1 percent complete]&quot;
+## [1] &quot;Testing SLC9A3R2 [33.8 percent complete]&quot;
+## [1] &quot;Testing ACBD4 [40.6 percent complete]&quot;
+## [1] &quot;Testing ATP5SL [47.4 percent complete]&quot;
+## [1] &quot;Testing ORC4 [54.1 percent complete]&quot;
+## [1] &quot;Testing COL18A1 [60.9 percent complete]&quot;
+## [1] &quot;Testing PLOD2 [67.7 percent complete]&quot;
+## [1] &quot;Testing OXCT1 [74.4 percent complete]&quot;
+## [1] &quot;Testing GPR116 [81.2 percent complete]&quot;
+## [1] &quot;Testing MRPS33 [88 percent complete]&quot;
+## [1] &quot;Testing CNTRL [94.7 percent complete]&quot;
+## [1] &quot;Correcting for multiple comparisons, FDR&quot;
+##  [1] 2.649530e-04 9.062522e-02 1.643707e-03 5.820478e-01 6.422058e-09
+##  [6] 1.000000e+00           NA 8.100479e-01 2.533791e-01 7.823958e-01
+##        Gene            p                    Comparison Mean.Expression
+## 30    MACF1 2.208761e-59            PR_HBMEC vs PR_H66        338.5000
+## 353   PTPRR 2.208761e-59           PR_Neuron vs PR_H66        398.2000
+## 529   GPR56 2.208761e-59           PR_HBVSMC vs PR_H66       1336.3750
+## 575  SGK494 2.208761e-59 PR_HBVSMC vs PR_Adult_Frontal        379.2000
+## 1207  RIMS1 2.208761e-59 PR_HBVSMC vs PR_Adult_Frontal        395.0000
+## 54    PDE4B 2.230848e-57            PR_HBMEC vs PR_H66        474.1429
+##       Std.Dev        p.adj        CV     LogP
+## 30   142.9525 1.731668e-55 0.4223118 54.76154
+## 353  271.2032 1.731668e-55 0.6810729 54.76154
+## 529  943.5469 1.731668e-55 0.7060495 54.76154
+## 575  263.8630 1.731668e-55 0.6958413 54.76154
+## 1207 147.2837 1.731668e-55 0.3728702 54.76154
+## 54   306.4454 8.744925e-54 0.6463146 53.05824</code></pre>
+<pre class="r"><code>head(res)</code></pre>
+<pre><code>##        Gene            p                    Comparison Mean.Expression
+## 30    MACF1 2.208761e-59            PR_HBMEC vs PR_H66        338.5000
+## 353   PTPRR 2.208761e-59           PR_Neuron vs PR_H66        398.2000
+## 529   GPR56 2.208761e-59           PR_HBVSMC vs PR_H66       1336.3750
+## 575  SGK494 2.208761e-59 PR_HBVSMC vs PR_Adult_Frontal        379.2000
+## 1207  RIMS1 2.208761e-59 PR_HBVSMC vs PR_Adult_Frontal        395.0000
+## 54    PDE4B 2.230848e-57            PR_HBMEC vs PR_H66        474.1429
+##       Std.Dev        p.adj        CV     LogP
+## 30   142.9525 1.731668e-55 0.4223118 54.76154
+## 353  271.2032 1.731668e-55 0.6810729 54.76154
+## 529  943.5469 1.731668e-55 0.7060495 54.76154
+## 575  263.8630 1.731668e-55 0.6958413 54.76154
+## 1207 147.2837 1.731668e-55 0.3728702 54.76154
+## 54   306.4454 8.744925e-54 0.6463146 53.05824</code></pre>
+<p>This can then be used to find interesting genes!</p>
 </div>
 
 
