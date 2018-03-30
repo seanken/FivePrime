@@ -18,13 +18,13 @@ def filter_bed_new(bt, filter_function, verbose=True, filter_name=None, max_erro
             # if line_count % 10000 == 0 and verbose:
             #     print("Processed " + str(line_count) + " intervals ["+str(round(100*float(line_count)/float(initial_count), 2))+"%]")
         except ValueError, e:
-            error(filter_name + " filtering failed for line #" + str(line_count))
-            error(str(e))
+            print(filter_name + " filtering failed for line #" + str(line_count))
+            print(str(e))
             print(traceback.format_exc())
             print(sys.exc_info()[0])
-            error(str(interval))
+            print(str(interval))
             for i in range(1, 8):
-                error("Field[" + str(i) + "]=" + str(interval[i]))
+                print("Field[" + str(i) + "]=" + str(interval[i]))
             sys.exit(1)
 
 
@@ -38,6 +38,7 @@ def filter_bed_new(bt, filter_function, verbose=True, filter_name=None, max_erro
                       str(initial_count-rval.count()) + ", " + str(rval.count()) + " left."
         if filter_name is not None:
             info_string = "[" + filter_name + "] " + info_string
+    	print(info_string)
     return rval
 
 

@@ -2,6 +2,15 @@
 
 Code for the pipeline that takes in bamfiles from a given five prime method (mapped to the genome with STAR) and outputs peaks.
 
+Requires:
+1) python
+2) samtools
+3) bedtools (note: only works with certain versions of bedtools due to changes in the formatting/ parameters of the merge command. We used version 2.20.1)
+
+The required python packages (beyond what is included with base R) are:
+1) pybedtools
+
+
 #Pre Pipeline
 
 Before using the pipeline to call peaks, users must map the 5' RNA-Seq reads to the genome of interest. We performed this using star, and example script is included in this directory (Star.sh). The script takes 4 arguements: name of output, input file (a fastq file), a path to the genome being mapped to (in STAR index format), and the number of bases to soft clip at the 5' end.

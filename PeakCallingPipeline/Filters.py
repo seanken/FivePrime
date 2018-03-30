@@ -35,9 +35,7 @@ def run_paraclu(paraclu_raw,paraclu_fin,min_peak_width,max_peak_width,min_densit
 
         peaks_bt = BedTool(paraclu_raw)
         # too narrow or wide
-        #peaks_bt = filter_bed_new(peaks_bt,
-        #                          lambda x: (len(x) > min_peak_width and len(x) < max_peak_width),
-        #                          filter_name="Width")
+        #peaks_bt = filter_bed_new(peaks_bt,lambda x: (len(x) > min_peak_width and len(x) < max_peak_width),filter_name="Width")
         #peaks_bt = peaks_bt.sort()
         #initial_count = peaks_bt.count()
 

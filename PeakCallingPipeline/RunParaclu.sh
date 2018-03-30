@@ -12,7 +12,7 @@ min_pos_with_data=$5
 min_sum=$6
 
 echo "Run Paraclu!"
-#paraclu/paraclu $MinVal $INPUT > ${OUTPUT}.temp
+paraclu/paraclu $MinVal $INPUT > ${OUTPUT}.temp
 
 echo "Convert output to bed format"
 paraclu-to-bed.sh ${OUTPUT}.temp > ${OUTPUT}.raw.bed
@@ -20,7 +20,7 @@ head ${OUTPUT}.raw.bed
 wc -l ${OUTPUT}.raw.bed
 echo "Filter!!"
 echo "Filter by length"
-cat ${OUTPUT}.raw.bed | awk '{if($3-$2 < 299){print $0}}' | awk '{if($3-$2>2){print $0}}' > ${OUTPUT}.temp.bed
+cat ${OUTPUT}.raw.bed | awk '{if($3-$2 < 300){print $0}}' | awk '{if($3-$2>3){print $0}}' > ${OUTPUT}.temp.bed
 mv ${OUTPUT}.temp.bed ${OUTPUT}.raw.bed
 head ${OUTPUT}.raw.bed
 wc -l ${OUTPUT}.raw.bed
@@ -30,7 +30,7 @@ mv ${OUTPUT}.temp.bed ${OUTPUT}.raw.bed
 head ${OUTPUT}.raw.bed
 wc -l ${OUTPUT}.raw.bed
 echo "Merge!"
-bedtools merge -c 4,5,6,7,8  -o max,max,distinct,min,max -i ${OUTPUT}.raw.bed > ${OUTPUT}.temp.bed
+bedtools merge -s -c 4,5,6,7,8  -o max,max,distinct,min,max  -i ${OUTPUT}.raw.bed > ${OUTPUT}.temp.bed
 mv ${OUTPUT}.temp.bed ${OUTPUT}.raw.bed
 head ${OUTPUT}.raw.bed
 wc -l ${OUTPUT}.raw.bed
