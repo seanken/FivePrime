@@ -23,7 +23,7 @@ The actual pipeline can be run with the SmallPipeline.sh command. This takes in 
 1) The input bam file
 2) The name of the output directory (will create this directory if it does not exist).
 3) The number of reads to downsample to (most of the analysis in our paper used 20000000)
-4) - 7) Numerous filtering parameters (see our manuscript for details). More spcifically:
+4) to 7) Numerous filtering parameters (see our manuscript for details). More spcifically:
 4) Min Value
 5) Min density rise
 6) Min pos with data
@@ -33,7 +33,7 @@ The results are output into the directory specified by argument 2. The output di
 1) downsampled.bam: The downsampled Bam 
 2) paraclu.bed: The final filtered bed  
 3) paraclu.ctss: The file of all ctss (the start sites of all reads in downsampled.bed, used for peak calling) 
-4) - 6) paraclu.raw.bed  paraclu.temp  rlp_processed.txt: Intermediate files
+4) to 6) paraclu.raw.bed  paraclu.temp  rlp_processed.txt: Intermediate files
 
 
 
