@@ -1,5 +1,5 @@
 #! /bin/bash
-
+use BEDtools
 ##
 ##Need installed:
 ##1) R (tested with version 3.3)
@@ -33,7 +33,7 @@ echo ""
 
 echo "get false negatives"
 #Rscript getCovered.R $GENES $RSEM $EVAL
-python temp.py $GENES $RSEM $EVAL
+python align_and_quantify.py $GENES $RSEM $EVAL
 #cp $RSEM ${EVAL}/covered.bed
 echo Get covered
 #head $TSS
@@ -42,10 +42,12 @@ wc -l ${EVAL}/rsem.unsorted.bed
 echo "sort"
 bedtools sort -i ${EVAL}/rsem.unsorted.bed > ${EVAL}/covered.sorted.bed
 echo "merge"
-bedtools merge -i ${EVAL}/covered.sorted.bed -c 4,5,6,11,12,13 -o first,first,first,max,max,max > ${EVAL}/temp.bed
+head ${EVAL}/covered.sorted.bed
+bedtools merge -s -i ${EVAL}/covered.sorted.bed -c 4,5,6,11,12,13 -o first,first,first,max,max,max > ${EVAL}/temp.bed
 mv ${EVAL}/temp.bed ${EVAL}/covered.bed
-
-awk '{if($12 > 1){print $0}}' $EVAL/covered.bed  > ${EVEL}/temp.bed
+cp ${EVAL}/covered.bed ${EVAL}/covered.temp.bed
+awk '{if($8 > 1){print $0}}' $EVAL/covered.bed  > ${EVAL}/temp.bed
+#Rscript subsamp.R $EVAL
 mv ${EVAL}/temp.bed $EVAL/covered.bed
 
 bedtools intersect -a $TSS -b ${EVAL}/covered.bed -u > ${EVAL}/temp.bed

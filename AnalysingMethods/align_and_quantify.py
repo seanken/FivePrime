@@ -88,5 +88,5 @@ if __name__=="__main__":
 	rsem_raw=sys.argv[2]
 	rsem_output_file=sys.argv[2]
 	direct=sys.argv[3]
-	add_gene_intervals_to_rsem_output(genes_file, rsem_raw, rsem_raw,annotation="gencode",working_dir=direct)
+	add_gene_intervals_to_rsem_output(genes_file, rsem_raw, rsem_raw,annotation="ucsc",working_dir=direct)
 	

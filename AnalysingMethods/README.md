@@ -12,9 +12,9 @@ The code takes in the results of peak calling and other data, spits out the resu
 5) The bed file of Dnase peaks
 6) The TSS peak files
 
-For example, for a peak file (peak.bed) and an RSEM file (rsem.genes.results), can run (using the files in the sources folder)
+Using the NanoCAGE data in the data folder and the annotations folder, can run:
 
-./getScore.sh peak.bed output rsem.genes.results sources/Genes.bed sources/dnase.bed sources/TSS.bed
+./getScore.sh data/Nano.bed output data/all_genes.bed sources/Genes.bed sources/dnase.bed sources/TSS.bed
 
 The output is put into the output directory, in the form of numerous bed files
 1) ParaClu_false_neg.bed: The false negatives
