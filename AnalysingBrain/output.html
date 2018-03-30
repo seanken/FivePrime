@@ -124,7 +124,7 @@ $(document).ready(function () {
 <div id="analysising-brain-data" class="section level1">
 <h1>Analysising Brain Data</h1>
 <p>Here we are interested in analysing the brain data from our paper. The first step is to upload the data:</p>
-<pre class="r"><code>dat&lt;-read.table(&quot;/home/unix/ssimmons/FivePrime/GithubCode/FivePrime/AnalysingBrain/data/Brain_Data.bed&quot;,header=T)
+<pre class="r"><code>dat&lt;-read.table(&quot;data/Brain_Data.bed&quot;,header=T)
 head(dat)</code></pre>
 <pre><code>##   chr  start    end       name sign         Gene HBVSMC HBMEC Neuron
 ## 1   1 713961 714087 CombPeak_1    - LOC100288069     32    46    182
@@ -151,7 +151,7 @@ head(dat)</code></pre>
 <div id="comparing-5-bias-between-samples-figure-6b" class="section level1">
 <h1>Comparing 5’ bias between samples (Figure 6b)</h1>
 <p>We can then import the code. Note that this code was used for Figure 6b and 6c to get the corresponding p-value.</p>
-<pre class="r"><code>source(&quot;/ahg/regevdata/projects/FiveprimeRNA/seanken/GithubCode/FivePrime/AnalysingBrain/Pval.R&quot;)</code></pre>
+<pre class="r"><code>source(&quot;Pval.R&quot;)</code></pre>
 <p>We are then able to calculate the normalized change in 5’ to 3’ bias, the p-value, and standard deviation and errors. For example, if we want to compare the invitro neurons (H66) to the fetal frontal cortex data, we get:</p>
 <pre class="r"><code>pv=getPval(dat,&quot;H66&quot;,&quot;Fetal_Frontal&quot;)</code></pre>
 <pre><code>## Loading required package: ggplot2</code></pre>

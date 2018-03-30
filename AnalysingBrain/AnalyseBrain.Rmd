@@ -4,7 +4,7 @@
 Here we are interested in analysing the brain data from our paper. The first step is to upload the data:
 
 ```{r}
-dat<-read.table("/home/unix/ssimmons/FivePrime/GithubCode/FivePrime/AnalysingBrain/data/Brain_Data.bed",header=T)
+dat<-read.table("data/Brain_Data.bed",header=T)
 head(dat)
 ```
 
@@ -13,7 +13,7 @@ head(dat)
 We can then import the code. Note that this code was used for Figure 6b and 6c to get the corresponding p-value.
 
 ```{r}
-source("/ahg/regevdata/projects/FiveprimeRNA/seanken/GithubCode/FivePrime/AnalysingBrain/Pval.R")
+source("Pval.R")
 ```
 
 We are then able to calculate the normalized change in 5' to 3' bias, the p-value, and standard deviation and errors. For example, if we want to compare the invitro neurons (H66) to the fetal frontal cortex data, we get:
